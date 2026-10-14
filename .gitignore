@@ -1,0 +1,83 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+dist-ssr/
+*.local
+
+# Environment & Secrets (root only - contains API keys)
+/.env
+backend/.env
+*.env.local
+*.env.*.local
+
+# MCP config with credentials
+backend/config.yaml
+/skills/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Uploads
+uploads/
+
+# Daily logs
+data/daily_logs/
+
+# Context spill 暂存区（大数据溢出临时存储，非 memory 系统，不入库）
+data/context_cache/
+
+# Skill runtime data (each skill's own .gitignore handles code exclusions)
+# 仅排除根目录 skills/ 独立仓库；宽规则 skills/ 会误伤 backend/tests/skills/ 测试文件
+/skills/
+
+# 本地运行时数据 / 临时产物 / 敏感备份（不入库）
+# 注意：gitignore 行尾 # 会被当作模式一部分，注释必须单独成行
+backend/config.yaml_bak
+backend/config/
+backend/output/
+# 后端运行时数据目录：SQLite、日志、FTS 索引，以及 CI 构建的
+# OAuth token（access_token/refresh_token）与下载缓存 —— 一律不入库
+backend/data/
+temp/
+backend/projectagent.db-shm
+backend/projectagent.db-wal
+frontend/.env
+.claude/
+backend/test_e2e_output.html
+backend/test_jira_format_output.html
+backend/Netflix_Certification_Status_Report.html
+/170947.png
+/195745.png
+
+# Tesseract portable binaries (download separately, see README)
+.tesseract/

@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: project-agent-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-projectagent}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+      POSTGRES_DB: ${DB_NAME:-projectagent}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-projectagent} -d ${DB_NAME:-projectagent}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: project-agent-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: project-agent-backend
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${DB_USER:-projectagent}:${DB_PASSWORD:-changeme}@postgres:5432/${DB_NAME:-projectagent}
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      - COMMERCIAL_LLM_PROVIDER=${COMMERCIAL_LLM_PROVIDER:-deepseek}
+      - COMMERCIAL_LLM_API_BASE=${COMMERCIAL_LLM_API_BASE:-https://api.deepseek.com/v1}
+      - COMMERCIAL_LLM_API_KEY=${COMMERCIAL_LLM_API_KEY}
+      - COMMERCIAL_LLM_MODEL=${COMMERCIAL_LLM_MODEL:-deepseek-chat}
+      - LOCAL_LLM_API_BASE=${LOCAL_LLM_API_BASE}
+      - LOCAL_LLM_API_KEY=${LOCAL_LLM_API_KEY}
+      - LOCAL_LLM_MODEL=${LOCAL_LLM_MODEL}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/app
+      - uploads_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: >
+      sh -c "cd /app &&
+             alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port $${BACKEND_PORT:-8000}"
+
+  # Frontend is served by backend static files in production
+  # This service is only for development
+  frontend-dev:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: project-agent-frontend-dev
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      - VITE_API_URL=http://localhost:${BACKEND_PORT:-8000}
+    profiles:
+      - dev
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads_data:

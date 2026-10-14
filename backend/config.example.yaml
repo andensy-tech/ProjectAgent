@@ -1,0 +1,26 @@
+# MCP Server 配置示例
+# 复制本文件为 config.yaml 并填写真实凭据
+# cp config.example.yaml config.yaml
+mcp_servers:
+  jira:
+    url: "http://your-jira-host:8111/mcp"
+    auth:
+      username: "your-username"
+      password: "your-password"
+  confluence:
+    url: "http://your-confluence-host:8112/mcp"
+    auth:
+      username: "your-username"
+      password: "your-password"
+  gerrit_gerrit1:
+    url: "http://your-gerrit1-host:8115/mcp"
+    auth:
+      server_url: "https://your-gerrit1-server"
+      username: "your-username"
+      password: "your-password"
+  gerrit_gerrit2:
+    url: "http://your-gerrit2-host:8118/mcp"
+    auth:
+      server_url: "https://your-gerrit2-server"
+      username: "your-username"
+      password: "your-password"

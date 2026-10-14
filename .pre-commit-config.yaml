@@ -1,0 +1,14 @@
+# ============================================================================
+# pre-commit 框架配置（可选；未安装 pre-commit 时使用 scripts/git_hooks 替代）
+#   安装：pip install pre-commit && pre-commit install
+#   手动运行：pre-commit run --all-files
+# ============================================================================
+repos:
+  - repo: local
+    hooks:
+      - id: backend-tests
+        name: Backend pytest gate
+        entry: bash scripts/pre_commit_test.sh
+        language: system
+        pass_filenames: false
+        always_run: true

@@ -1,0 +1,38 @@
+{
+  "note": "Synthetic sample for open-source demo. Originally produced by scanning Jira issue comments for CL/build/firmware references.",
+  "total_issues": 2,
+  "total_cl_refs": 4,
+  "type_counts": {
+    "gerrit_change_url": 2,
+    "gerrit_proposed_text": 1,
+    "git_repo_url": 1,
+    "jenkins_pb_url": 0,
+    "firmware_url": 0,
+    "gerrit_commit_url": 0,
+    "gerrit_merged_text": 0
+  },
+  "unique_gerrit_urls": [
+    "https://gerrit-1.example.com/c/platform/device/oem-a/board/+/10001",
+    "https://gerrit-1.example.com/c/platform/uboot/+/10002"
+  ],
+  "all_refs": [
+    {
+      "issue": "TV-900001",
+      "type": "gerrit_proposed_text",
+      "text": "Change proposed: 'System: add sample feature [1/1]' (platform/uboot u-tv-release-branch)",
+      "context": "Change proposed: 'System: add sample feature [1/1]' (platform/uboot u-tv-release-branch)\nhttps://gerrit-1.example.com/c/platform/uboot/+/10002"
+    },
+    {
+      "issue": "TV-900001",
+      "type": "git_repo_url",
+      "url": "git://git.example.com/platform/manifest.git",
+      "context": "repo init --no-tags -u git://git.example.com/platform/manifest.git -b u-tv-release-branch"
+    },
+    {
+      "issue": "TV-900002",
+      "type": "gerrit_change_url",
+      "url": "https://gerrit-1.example.com/c/platform/device/oem-a/board/+/10001",
+      "context": "Change proposed: 'board: enable sample config [1/1]' (platform/device/oem-a/board u-tv-release-branch)\nhttps://gerrit-1.example.com/c/platform/device/oem-a/board/+/10001"
+    }
+  ]
+}
